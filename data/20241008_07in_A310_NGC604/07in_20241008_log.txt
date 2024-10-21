@@ -1,0 +1,30 @@
+LOCAL DATE:		10/08/2024
+LOCAL START TIME:	18:52
+LOCAL END TIME:		22:50
+
+NAME(S):	Jasmin Mohammadi and Ava Lee Allen
+
+GOAL(S): observe NGC604	
+
+
+TRANSPARENCY:	Above Average
+SEEING:		Poor 2/5
+TEMPERATURE:	59 to 68 F
+HUMIDITY:	35% to 40%
+
+TELESCOPE:		07in (178mm) AP refractor
+CAMERA:			SBIG ST-10
+Camera temp setpoint:	-15C
+
+
+IMAGE LOG
+
+# frames	target		exposure length		filter
+1		NGC604		300s			ha
+1		NGC604		120s			clear
+10		NGC604		300s			ha
+10		NGC604		300s			o
+7		dark		300s			n/a
+7		bias		n/a			n/a
+7		flat		15s			ha
+7		flat		25s			o
