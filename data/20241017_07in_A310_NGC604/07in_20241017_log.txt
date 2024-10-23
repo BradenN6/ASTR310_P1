@@ -1,0 +1,35 @@
+LOCAL DATE: 10/17			
+LOCAL START TIME: 18:47		
+LOCAL END TIME:	23:05		
+
+NAME(S): Ryan Tyberg		
+GOAL(S): Observing NGC604			
+
+TRANSPARENCY: Above Average  				
+SEEING: Poor 2/5		
+TEMPERATURE: 50 F to 59 F			
+HUMIDITY: 40% to 45%			
+
+TELESCOPE: 		07in (178mm) AP refractor
+CAMERA:			SBIG ST-10
+Camera temp setpoint:	-15C 
+
+
+IMAGE LOG
+# frames	target		exposure length		filter
+10 		NGC604		300s			Ha
+10		NGC604		300s			o-iii
+3		NGC604		300s			Ha
+3		NGC604		300s			o-iii
+7		Dark		300s			n/a
+7		bias		n/a			n/a
+6		Flat		15s			Ha
+6		Flat		30s			o-iii
+2		Flat		15s			Ha
+2		Flat		30s			o-iii
+
+
+NOTES:
+Observed during a full moon 
+Added 6 additional images to account for the delay between the two telescopes.
+We had to stop and restart the flats because a moth flew directly in front of the light.
