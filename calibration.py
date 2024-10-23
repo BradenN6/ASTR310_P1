@@ -27,7 +27,7 @@ def calib_bias(bias_files):
     bias_imgs = [bias_img.data for bias_img in bias_files]
     master_bias = median_combine(bias_imgs)
     hdu = fits.PrimaryHDU(master_bias)
-    hdu.writeto('master_bias' + '.fit', overwrite=True)
+    hdu.writeto('master_bias.fit', overwrite=True)
     return fits.ImageHDU(master_bias, bias_files[0].header)
 
 # Calibrate dark images
@@ -48,7 +48,7 @@ def calib_darks(dark_files, master_bias_fname):
     #with fits.open('master_dark' + '.fit') as hdul:
     #hdr = hdul[0].header
     hdu.header = dark_files[0].header
-    hdu.writeto('master_dark' + '.fit', overwrite=True)
+    hdu.writeto('master_dark.fit', overwrite=True)
 
     return fits.ImageHDU(master_dark, dark_files[0].header)
 
