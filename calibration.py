@@ -23,16 +23,17 @@ def median_combine(imgs):
 
 # input open fits files in primary hdu [0]
 # filter as string 'ha' or 'oiii'
-def calib_bias(bias_files, filter):
+def calib_bias(bias_files):
     bias_imgs = [bias_img.data for bias_img in bias_files]
     master_bias = median_combine(bias_imgs)
     hdu = fits.PrimaryHDU(master_bias)
-    hdu.writeto('master_bias_' + filter + '.fit', overwrite=True)
+    hdu.writeto('master_bias' + '.fit', overwrite=True)
+    return fits.ImageHDU(master_bias, bias_files[0].header)
 
 # Calibrate dark images
 # Subtract the master bias from each raw dark image
 # then median combine into a master dark. 
-def calib_darks(dark_files, master_bias_fname, filter):
+def calib_darks(dark_files, master_bias_fname):
     raw_darks = [file.data for file in dark_files]
 
     with fits.open(master_bias_fname) as mb:
@@ -42,11 +43,14 @@ def calib_darks(dark_files, master_bias_fname, filter):
     master_dark = median_combine(bias_subtracted_darks)
 
     hdu = fits.PrimaryHDU(master_dark)
-    hdu.writeto('master_dark_' + filter + '.fit', overwrite=True)
+    
 
-    with fits.open('master_dark_' + filter + '.fit') as hdul:
-        hdr = hdul[0].header
-        hdr["EXPTIME"] = dark_files.header["EXPTIME"]
+    #with fits.open('master_dark' + '.fit') as hdul:
+    #hdr = hdul[0].header
+    hdu.header = dark_files[0].header
+    hdu.writeto('master_dark' + '.fit', overwrite=True)
+
+    return fits.ImageHDU(master_dark, dark_files[0].header)
 
 # Calibrate flat images
 # Subtract master bias from each flat image
@@ -75,4 +79,14 @@ def calib_flats(flat_files, master_bias_fname, master_dark_fname, filter):
     master_flat = median_combined_flats/np.median(median_combined_flats)
 
     hdu = fits.PrimaryHDU(master_flat)
+    hdu.header = flat_files[0].header
     hdu.writeto('master_flat_' + filter + '.fits', overwrite=True)
+    return fits.ImageHDU(master_flat, hdu.header)
+
+
+def calib_lights(lightHDUs, master_bias, master_dark, master_flat):
+    calibratedFiles = []
+    for img in lightHDUs:
+        calibratedFiles.append(fits.ImageHDU((img.data-master_bias.data-img.header["EXPTIME"]/master_dark.header["EXPTIME"]*master_dark.data)/master_flat.data,
+                               img.header))
+    return calibratedFiles
