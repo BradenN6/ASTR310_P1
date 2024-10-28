@@ -1,0 +1,28 @@
+LOCAL DATE:		October 27, 2024		
+LOCAL START TIME: 		18:47
+LOCAL END TIME:			22:45
+
+NAME(S):		Caro Wilking	
+GOAL(S):		Observe NGC 604
+
+TRANSPARENCY: 		Above Average		
+SEEING:			Average 3/5
+TEMPERATURE:		41F to 50F
+HUMIDITY:		35% to 45%
+
+TELESCOPE:		07in (178mm) AP refractor
+CAMERA:			SBIG ST-10
+Camera temp setpoint:	-15C
+
+
+IMAGE LOG
+# frames	target		exposure length		filter
+1		NGC 604		120s			ha
+10		NGC 604		300s			ha
+10		NGC 604		300s			o-iii
+7		bias		n/a			n/a
+7		dark		300s			n/a
+7		flat		15s			ha
+7		flat		30s			o-iii
+
+
