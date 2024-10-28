@@ -68,7 +68,7 @@ c_oLights = calib.calib_lights(oLights, master_bias, master_dark, master_flat_o)
 
 starCenter = (1501, 828)
 
-dispFITS(c_hLights[0], 1, 10)
-dispFITS(c_oLights[0], 1, 10)
+dispFITS(c_hLights[0], 1, 2)
+dispFITS(c_oLights[0], 1, 2)
 
 plt.show()
