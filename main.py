@@ -14,7 +14,7 @@ figNum = 1
 def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None):
     global figNum
     plt.figure(figsize=[6,6])
-    fig = plt.imshow(hdu.data,vmin=np.median(hdu.data)-medMinCoeff*np.std(hdu.data),vmax=np.median(hdu.data)+medMinCoeff*np.std(hdu.data),cmap='plasma',extent=(0,hdu.header["NAXIS1"],hdu.header["NAXIS2"],0))
+    fig = plt.imshow(hdu.data,vmin=np.median(hdu.data)-medMinCoeff*np.std(hdu.data),vmax=np.median(hdu.data)+medMaxCoeff*np.std(hdu.data),cmap='plasma',extent=(0,hdu.header["NAXIS1"],hdu.header["NAXIS2"],0))
     plt.colorbar(fig,fraction=0.046,pad=0.04)
     if title == None:
         plt.title("Figure " + str(figNum))
@@ -66,7 +66,9 @@ master_flat_o = calib.calib_flats(oFlats, "master_bias.fit", "master_dark.fit", 
 c_hLights = calib.calib_lights(hLights, master_bias, master_dark, master_flat_ha)
 c_oLights = calib.calib_lights(oLights, master_bias, master_dark, master_flat_o)
 
-dispFITS(c_hLights[0], 1, 2)
-dispFITS(c_oLights[0], 1, 2)
+starCenter = (1501, 828)
+
+dispFITS(c_hLights[0], 1, 10)
+dispFITS(c_oLights[0], 1, 10)
 
 plt.show()
