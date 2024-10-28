@@ -44,9 +44,6 @@ def calib_darks(dark_files, master_bias_fname):
 
     hdu = fits.PrimaryHDU(master_dark)
     
-
-    #with fits.open('master_dark' + '.fit') as hdul:
-    #hdr = hdul[0].header
     hdu.header = dark_files[0].header
     hdu.writeto('master_dark.fit', overwrite=True)
 
@@ -83,7 +80,7 @@ def calib_flats(flat_files, master_bias_fname, master_dark_fname, filter):
     hdu.writeto('master_flat_' + filter + '.fits', overwrite=True)
     return fits.ImageHDU(master_flat, hdu.header)
 
-
+# Calibrate science images
 def calib_lights(lightHDUs, master_bias, master_dark, master_flat):
     calibratedFiles = []
     for img in lightHDUs:
