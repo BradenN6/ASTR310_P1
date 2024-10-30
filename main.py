@@ -1,7 +1,6 @@
 from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import align
 
 import calibration as calib
@@ -72,5 +71,7 @@ starCenter = (1501, 828)
 
 dispFITS(c_hLights[0], 1, 2)
 dispFITS(c_oLights[0], 1, 2)
+
+align.alignFrames(c_hLights, starCenter[0], starCenter[1])
 
 plt.show()
