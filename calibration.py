@@ -102,9 +102,9 @@ def calib_driver(lightPath, biasPath, flatPath):
 
     #calibrations
     master_bias = calib_bias(biases)
-    master_dark = calib_darks(darks, "master_bias.fit")
-    master_flat_ha = calib_flats(hFlats,"master_bias.fit", "master_dark.fit")
-    master_flat_o = calib_flats(oFlats, "master_bias.fit", "master_dark.fit")
+    master_dark = calib_darks(darks, master_bias)
+    master_flat_ha = calib_flats(hFlats,master_bias, master_dark)
+    master_flat_o = calib_flats(oFlats, master_bias, master_dark)
 
     c_hLights = calib_lights(hLights, master_bias, master_dark, master_flat_ha)
     c_oLights = calib_lights(oLights, master_bias, master_dark, master_flat_o)
