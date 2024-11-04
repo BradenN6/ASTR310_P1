@@ -47,26 +47,32 @@ def findMaxPixelCoord(data, guessX, guessY, rX, rY):
                 maxCoord = (x,y)
     return maxCoord[0], maxCoord[1]
 
-#function which takes in an array of calibrated light frames and returns an array of aligned frames
-def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
-    shifted = []
-    x0, y0 = findMaxPixelCoord(hduArray[0].data, guessX, guessY, rX, rY)
+def trackStar(hduArray, startX, startY, rX=10, rY = 10):
+    x0, y0 = findMaxPixelCoord(hduArray[0].data, startX, startY, rX, rY)
+    positions = [(x0, y0)]
     testX, testY = x0, y0
-    if markup:
-        dispFITS(hduArray[0],1, 10)
-        plt.gca().add_patch(patches.Rectangle((guessX, guessY), 1, 1, color="red", fc=(1,0,0,0.3)))
-        plt.gca().add_patch(patches.Rectangle((guessX-rX, guessY-rY),2*rX, 2*rY, color="red", fill=False))
-        plt.gca().add_patch(patches.Rectangle((x0, y0), 1, 1, color="black", fc=(0,0,0,0.3)))
     for i in range(1, len(hduArray)):
         x, y = findMaxPixelCoord(hduArray[i].data, testX, testY, rX, rY)
-        shifted.append(fits.ImageHDU(imshift(hduArray[i].data, -(y-y0), -(x-x0)),hduArray[i].header))
-        if markup:
-            dispFITS(hduArray[i],1, 10)
-            plt.gca().add_patch(patches.Rectangle((testX, testY), 1, 1, color="red", fc=(1,0,0,0.3)))
-            plt.gca().add_patch(patches.Rectangle((testX-rX, testY-rY),2*rX, 2*rY, color="red", fill=False))
-            plt.gca().add_patch(patches.Rectangle((x, y), 1, 1, color="black", fc=(0,0,0,0.3)))
+        positions.append((x,y))
         testX = x
         testY = y
+    return positions
+
+#function which takes in an array of calibrated light frames and returns an array of aligned frames
+def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
+    coords = trackStar(hduArray, guessX, guessY, rX, rY)
+    shifted = []
+    if markup:
+        plt.gca().add_patch(patches.Rectangle((guessX, guessY), 1, 1, color="red", fc=(1,0,0,0.3)))
+        plt.gca().add_patch(patches.Rectangle((guessX-rX, guessY-rY),2*rX, 2*rY, color="red", fill=False))
+        plt.gca().add_patch(patches.Rectangle((coords[0][0], coords[0][0]), 1, 1, color="black", fc=(0,0,0,0.3)))
+    for i in range(1, len(hduArray)):
+        shifted.append(fits.ImageHDU(imshift(hduArray[i].data, coords[0][1]-coords[i][1], coords[0][0]-coords[i][0]),hduArray[i].header))
+        if markup:
+            dispFITS(hduArray[i],1, 10)
+            plt.gca().add_patch(patches.Rectangle((coords[i-1][0], coords[i-1][1]), 1, 1, color="red", fc=(1,0,0,0.3)))
+            plt.gca().add_patch(patches.Rectangle((coords[i-1][0]-rX, coords[i-1][1]-rY),2*rX, 2*rY, color="red", fill=False))
+            plt.gca().add_patch(patches.Rectangle((coords[i][0], coords[i][1]), 1, 1, color="black", fc=(0,0,0,0.3)))
   
     return shifted
             
