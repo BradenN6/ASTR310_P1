@@ -75,7 +75,7 @@ def zeroPadLeft(size, index):
     return index
 
 # Calibrate science images for a data set
-def calib_driver(lightPath, biasPath, flatPath):
+def calib_driver(lightPath, biasPath, flatPath, biasSuffix, session):
     hLights = []
     oLights = []
     for i in range(1,11):
@@ -91,7 +91,7 @@ def calib_driver(lightPath, biasPath, flatPath):
     oFlats = []
     for i in range(1, 8):
         s = zeroPadLeft(3,i)
-        biPath = biasPath + s + "-bi.fit"
+        biPath = biasPath + s + biasSuffix +".fit"
         dPath = biasPath + s + "-d.fit"
         flatHPath = flatPath + s + "-ha.fit"
         flatOPath = flatPath + s + "-o.fit"
@@ -105,6 +105,9 @@ def calib_driver(lightPath, biasPath, flatPath):
     master_dark = calib_darks(darks, master_bias)
     master_flat_ha = calib_flats(hFlats,master_bias, master_dark)
     master_flat_o = calib_flats(oFlats, master_bias, master_dark)
+    fits.writeto("master_bias_" + str(session) + ".fit", master_bias.data, master_bias.header, overwrite=True)
+    fits.writeto("master_dark_" + str(session) + ".fit", master_dark.data, master_dark.header, overwrite=True)
+    fits.writeto("master_flat_ha_" + str(session) + ".fit", master_flat_ha.data, master_flat_ha.header, overwrite=True)
 
     c_hLights = calib_lights(hLights, master_bias, master_dark, master_flat_ha)
     c_oLights = calib_lights(oLights, master_bias, master_dark, master_flat_o)
