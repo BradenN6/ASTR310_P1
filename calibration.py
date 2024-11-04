@@ -26,26 +26,18 @@ def median_combine(imgs):
 def calib_bias(bias_files):
     bias_imgs = [bias_img.data for bias_img in bias_files]
     master_bias = median_combine(bias_imgs)
-    hdu = fits.PrimaryHDU(master_bias)
-    hdu.writeto('master_bias.fit', overwrite=True)
+    #hdu = fits.PrimaryHDU(master_bias)
+    #hdu.writeto('master_bias.fit', overwrite=True)
     return fits.ImageHDU(master_bias, bias_files[0].header)
 
 # Calibrate dark images
 # Subtract the master bias from each raw dark image
 # then median combine into a master dark. 
-def calib_darks(dark_files, master_bias_fname):
+def calib_darks(dark_files, master_bias):
     raw_darks = [file.data for file in dark_files]
 
-    with fits.open(master_bias_fname) as mb:
-        master_bias = mb[0].data
-
-    bias_subtracted_darks = [dark - master_bias for dark in raw_darks]
+    bias_subtracted_darks = [dark - master_bias.data for dark in raw_darks]
     master_dark = median_combine(bias_subtracted_darks)
-
-    hdu = fits.PrimaryHDU(master_dark)
-    
-    hdu.header = dark_files[0].header
-    hdu.writeto('master_dark.fit', overwrite=True)
 
     return fits.ImageHDU(master_dark, dark_files[0].header)
 
@@ -53,21 +45,12 @@ def calib_darks(dark_files, master_bias_fname):
 # Subtract master bias from each flat image
 # Subtract master dark scaled by exposure time
 # Median combine and normalize by dividing by median
-def calib_flats(flat_files, master_bias_fname, master_dark_fname, filter):
-    #bias_subtracted_flats = [flat - master_bias for flat in raw_flats]
-    #dark_subtracted_flats = [flat - master_dark*flat.header["EXPTIME"]/dark.header["EXPTIME"]]
-    with fits.open(master_bias_fname) as mb:
-        master_bias = mb[0].data
-
-    with fits.open(master_dark_fname) as md:
-        master_dark = md[0].data
-        dark_exptime = md[0].header['EXPTIME']
-
+def calib_flats(flat_files, master_bias, master_dark):
     calibrated_flats = []
 
     for raw_flat in flat_files:
-        bias_subtracted_flat = raw_flat.data - master_bias
-        dark_subtracted_flat = bias_subtracted_flat - master_dark*raw_flat.header["EXPTIME"]/dark_exptime
+        bias_subtracted_flat = raw_flat.data - master_bias.data
+        dark_subtracted_flat = bias_subtracted_flat - master_dark.data*raw_flat.header["EXPTIME"]/master_dark.header['EXPTIME']
         calibrated_flats.append(dark_subtracted_flat)
 
     median_combined_flats = median_combine(calibrated_flats)
@@ -75,10 +58,7 @@ def calib_flats(flat_files, master_bias_fname, master_dark_fname, filter):
     # Normalized master flat
     master_flat = median_combined_flats/np.median(median_combined_flats)
 
-    hdu = fits.PrimaryHDU(master_flat)
-    hdu.header = flat_files[0].header
-    hdu.writeto('master_flat_' + filter + '.fits', overwrite=True)
-    return fits.ImageHDU(master_flat, hdu.header)
+    return fits.ImageHDU(master_flat, flat_files[0].header)
 
 # Calibrate science images
 def calib_lights(lightHDUs, master_bias, master_dark, master_flat):
@@ -87,3 +67,47 @@ def calib_lights(lightHDUs, master_bias, master_dark, master_flat):
         calibratedFiles.append(fits.ImageHDU((img.data-master_bias.data-img.header["EXPTIME"]/master_dark.header["EXPTIME"]*master_dark.data)/master_flat.data,
                                img.header))
     return calibratedFiles
+
+def zeroPadLeft(size, index):
+    index = str(index)
+    while(len(index)<size):
+        index = "0"+index
+    return index
+
+# Calibrate science images for a data set
+def calib_driver(lightPath, biasPath, flatPath):
+    hLights = []
+    oLights = []
+    for i in range(1,11):
+        s = zeroPadLeft(3, i)
+        hPath = lightPath + s + "-ha.fit"
+        oPath = lightPath + s + "-o.fit"
+        hLights.append(fits.open(hPath)[0])
+        oLights.append(fits.open(oPath)[0])
+
+    biases = []
+    darks = []
+    hFlats = []
+    oFlats = []
+    for i in range(1, 8):
+        s = zeroPadLeft(3,i)
+        biPath = biasPath + s + "-bi.fit"
+        dPath = biasPath + s + "-d.fit"
+        flatHPath = flatPath + s + "-ha.fit"
+        flatOPath = flatPath + s + "-o.fit"
+        biases.append(fits.open(biPath)[0])
+        darks.append(fits.open(dPath)[0])
+        hFlats.append(fits.open(flatHPath)[0])
+        oFlats.append(fits.open(flatOPath)[0])
+
+    #calibrations
+    master_bias = calib_bias(biases)
+    master_dark = calib_darks(darks, "master_bias.fit")
+    master_flat_ha = calib_flats(hFlats,"master_bias.fit", "master_dark.fit")
+    master_flat_o = calib_flats(oFlats, "master_bias.fit", "master_dark.fit")
+
+    c_hLights = calib_lights(hLights, master_bias, master_dark, master_flat_ha)
+    c_oLights = calib_lights(oLights, master_bias, master_dark, master_flat_o)
+
+    return master_bias, master_dark, master_flat_ha, master_flat_o, c_hLights, c_oLights
+

@@ -6,7 +6,7 @@ from align import dispFITS
 import calibration as calib
 
 def zeroPadLeft(size, index):
-    index = str(i)
+    index = str(index)
     while(len(index)<size):
         index = "0"+index
     return index
