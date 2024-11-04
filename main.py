@@ -2,7 +2,7 @@ from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
 import align
-
+from align import dispFITS
 import calibration as calib
 
 def zeroPadLeft(size, index):
@@ -11,19 +11,7 @@ def zeroPadLeft(size, index):
         index = "0"+index
     return index
 
-figNum = 1
-def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None):
-    global figNum
-    plt.figure(figsize=[6,6])
-    fig = plt.imshow(hdu.data,vmin=np.median(hdu.data)-medMinCoeff*np.std(hdu.data),vmax=np.median(hdu.data)+medMaxCoeff*np.std(hdu.data),cmap='plasma',extent=(0,hdu.header["NAXIS1"],hdu.header["NAXIS2"],0))
-    plt.colorbar(fig,fraction=0.046,pad=0.04)
-    if title == None:
-        plt.title("Figure " + str(figNum))
-    else:
-        plt.title(title)
-    plt.xlabel("Pixel x coordinate")
-    plt.ylabel("Pixel y coordinate")
-    figNum += 1
+
 
 lightPath = "data\\20241008_07in_A310_NGC604\\science\\NGC 604-"
 hLights = []
@@ -67,11 +55,11 @@ master_flat_o = calib.calib_flats(oFlats, "master_bias.fit", "master_dark.fit", 
 c_hLights = calib.calib_lights(hLights, master_bias, master_dark, master_flat_ha)
 c_oLights = calib.calib_lights(oLights, master_bias, master_dark, master_flat_o)
 
-starCenter = (1501, 828)
+starCenter = (1511, 822)
 
-dispFITS(c_hLights[0], 1, 2)
-dispFITS(c_oLights[0], 1, 2)
+#dispFITS(c_hLights[0], 1, 2)
+#dispFITS(c_oLights[0], 1, 2)
 
-align.alignFrames(c_hLights, starCenter[0], starCenter[1])
+align.alignFrames(c_hLights, starCenter[0], starCenter[1], markup=True)
 
 plt.show()
