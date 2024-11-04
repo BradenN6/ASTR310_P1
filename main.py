@@ -60,6 +60,6 @@ starCenter = (1511, 822)
 #dispFITS(c_hLights[0], 1, 2)
 #dispFITS(c_oLights[0], 1, 2)
 
-align.alignFrames(c_hLights, starCenter[0], starCenter[1], markup=True)
+align.alignFrames(c_hLights, starCenter[0], starCenter[1],20,20, markup=True)
 
 plt.show()
