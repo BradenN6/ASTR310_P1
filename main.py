@@ -19,8 +19,13 @@ starCenter = (1511, 822)
 #dispFITS(c_hLights[0], 1, 2)
 #dispFITS(c_oLights[0], 1, 2)
 
+dispFITS(c_hLights[0], 1, 10)
+dispFITS(fits.ImageHDU(align.imshift(c_hLights[0].data, 10, 10), c_hLights[0].header),1,10)
+
 aligned = align.alignFrames(c_hLights, starCenter[0], starCenter[1],20,20)
-for img in aligned:
-    dispFITS(img, 1, 10)
+added = aligned[0].data
+for i in range(1, len(aligned),1):
+    added += aligned[i].data
+dispFITS(fits.ImageHDU(added, aligned[0].header), 1, 1, "Added")
 
 plt.show()

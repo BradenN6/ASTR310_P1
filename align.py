@@ -51,10 +51,15 @@ def findMaxPixelCoord(data, guessX, guessY, rX, rY):
 def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
     shifted = []
     x0, y0 = findMaxPixelCoord(hduArray[0].data, guessX, guessY, rX, rY)
-    testX, testY = guessX, guessY
+    testX, testY = x0, y0
+    if markup:
+        dispFITS(hduArray[0],1, 10)
+        plt.gca().add_patch(patches.Rectangle((guessX, guessY), 1, 1, color="red", fc=(1,0,0,0.3)))
+        plt.gca().add_patch(patches.Rectangle((guessX-rX, guessY-rY),2*rX, 2*rY, color="red", fill=False))
+        plt.gca().add_patch(patches.Rectangle((x0, y0), 1, 1, color="black", fc=(0,0,0,0.3)))
     for i in range(1, len(hduArray)):
         x, y = findMaxPixelCoord(hduArray[i].data, testX, testY, rX, rY)
-        shifted.append(fits.ImageHDU(imshift(hduArray[i].data, testX-x, testY-y),hduArray[i].header))
+        shifted.append(fits.ImageHDU(imshift(hduArray[i].data, -(y-y0), -(x-x0)),hduArray[i].header))
         if markup:
             dispFITS(hduArray[i],1, 10)
             plt.gca().add_patch(patches.Rectangle((testX, testY), 1, 1, color="red", fc=(1,0,0,0.3)))
