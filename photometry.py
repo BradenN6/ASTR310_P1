@@ -10,8 +10,24 @@ egain = 1.2999999523162842
 Kccd = 1/egain
 
 # Run Matthew's Aperture photometry routine
-def aper_driver():
-    return None
+def aper_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range, angle):
+
+    apertures = []
+    for i in np.linspace(-rad1_range, rad1_range, 0.1):
+        for j in np.linspace(-rad2_range, rad2_range, 0.1):
+            apertures.append((base_aperture[0]+i, base_aperture[1]+j, base_aperture[2], \
+                              base_aperture[3], base_aperture[4], base_aperture[5]))
+
+    img = lightHDU.data
+
+    vals = []
+    for aperture in apertures:
+        flux, err = aperE.photometry(img, coords[0], coords[1], aperture[0], aperture[1], \
+                          aperture[2], aperture[3], aperture[4], aperture[5], egain, angle=angle, verbose=1)
+        
+        vals.append((flux, err))
+
+    return coords, apertures, vals
 
 def aperE_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range):
     '''
