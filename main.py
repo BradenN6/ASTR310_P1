@@ -5,6 +5,7 @@ import align
 import dataReduce
 from align import dispFITS
 import calibration as calib
+import scipy.ndimage as ndimage
 
 def zeroPadLeft(size, index):
     index = str(index)
@@ -107,4 +108,13 @@ shifted.append(fits.ImageHDU(align.imshift(Ha2.data, shift2[1], shift2[0]),Ha2.h
 shifted.append(fits.ImageHDU(align.imshift(Ha3.data, shift3[1], shift3[0]),Ha3.header))
 H = dataReduce.sum(shifted)
 dispFITS(H,1,1)
+
+# rotate ccw
+
+def rotate_image(image_array, angle):
+    """Rotates an image array by a specified angle (in degrees)."""
+    return ndimage.rotate(image_array, angle, reshape=False)
+
+rotated_data1 = rotate_image(data1, 35)
+
 plt.show()
