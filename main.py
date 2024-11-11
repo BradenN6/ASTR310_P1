@@ -110,12 +110,15 @@ rot3 = angle3-angle1
 
 shifted = [Ha1]
 shifted.append(fits.ImageHDU(rotate_image(align.imshift(Ha2.data, shift2[1], shift2[0]),rot2*180/np.pi),Ha2.header))
-shifted.append(fits.ImageHDU(rotate_image(align.imshift(Ha3.data, shift3[1], shift3[0]),rot2*180/np.pi),Ha3.header))
+shifted.append(fits.ImageHDU(rotate_image(align.imshift(Ha3.data, shift3[1], shift3[0]),rot3*180/np.pi),Ha3.header))
 H = dataReduce.sum(shifted)
+shifted = [O1]
+shifted.append(fits.ImageHDU(rotate_image(align.imshift(O2.data, shift2[1], shift2[0]),rot2*180/np.pi),O2.header))
+shifted.append(fits.ImageHDU(rotate_image(align.imshift(O3.data, shift3[1], shift3[0]),rot3*180/np.pi),O3.header))
+
+O = dataReduce.sum(shifted)
 dispFITS(H,1,1)
+dispFITS(O,1,1)
 
-
-
-#rotated_data1 = rotate_image(data1, 35)
 
 plt.show()
