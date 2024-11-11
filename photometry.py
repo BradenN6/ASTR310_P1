@@ -56,5 +56,8 @@ def aperE_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range):
     return coords, apertures, vals
         
 
-
+# TODO
+# Aperture photometry on nebulae
+# testing apertures
+# 3d-plot SNR to determine aperture to use
     
