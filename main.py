@@ -13,6 +13,11 @@ def zeroPadLeft(size, index):
         index = "0"+index
     return index
 
+# rotate ccw
+def rotate_image(image_array, angle):
+    """Rotates an image array by a specified angle (in degrees)."""
+    return ndimage.rotate(image_array, angle, reshape=False)
+
 SCH1 = (1501, 827)
 SCO1 = (1507, 826)
 SCH2 = (1240,908)
@@ -104,17 +109,13 @@ rot2 = angle2-angle1
 rot3 = angle3-angle1
 
 shifted = [Ha1]
-shifted.append(fits.ImageHDU(align.imshift(Ha2.data, shift2[1], shift2[0]),Ha2.header))
-shifted.append(fits.ImageHDU(align.imshift(Ha3.data, shift3[1], shift3[0]),Ha3.header))
+shifted.append(fits.ImageHDU(rotate_image(align.imshift(Ha2.data, shift2[1], shift2[0]),rot2*180/np.pi),Ha2.header))
+shifted.append(fits.ImageHDU(rotate_image(align.imshift(Ha3.data, shift3[1], shift3[0]),rot2*180/np.pi),Ha3.header))
 H = dataReduce.sum(shifted)
 dispFITS(H,1,1)
 
-# rotate ccw
 
-def rotate_image(image_array, angle):
-    """Rotates an image array by a specified angle (in degrees)."""
-    return ndimage.rotate(image_array, angle, reshape=False)
 
-rotated_data1 = rotate_image(data1, 35)
+#rotated_data1 = rotate_image(data1, 35)
 
 plt.show()
