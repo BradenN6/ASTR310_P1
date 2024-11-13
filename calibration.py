@@ -105,6 +105,8 @@ def calib_driver(lightPath, biasPath, flatPath, biasSuffix, session):
     master_dark = calib_darks(darks, master_bias)
     master_flat_ha = calib_flats(hFlats,master_bias, master_dark)
     master_flat_o = calib_flats(oFlats, master_bias, master_dark)
+    multiply_ha = fits.ImageHDU(1/master_flat_ha.data)
+    multiply_o = fits.ImageHDU(1/master_flat_o.data)
     fits.writeto("master_bias_" + str(session) + ".fit", master_bias.data, master_bias.header, overwrite=True)
     fits.writeto("master_dark_" + str(session) + ".fit", master_dark.data, master_dark.header, overwrite=True)
     fits.writeto("master_flat_ha_" + str(session) + ".fit", master_flat_ha.data, master_flat_ha.header, overwrite=True)
@@ -112,5 +114,5 @@ def calib_driver(lightPath, biasPath, flatPath, biasSuffix, session):
     c_hLights = calib_lights(hLights, master_bias, master_dark, master_flat_ha)
     c_oLights = calib_lights(oLights, master_bias, master_dark, master_flat_o)
 
-    return master_bias, master_dark, master_flat_ha, master_flat_o, c_hLights, c_oLights
+    return master_bias, master_dark, master_flat_ha, master_flat_o, c_hLights, c_oLights, multiply_ha, multiply_o
 

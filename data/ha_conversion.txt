@@ -1,0 +1,13 @@
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-001-ha.fit' -> 'ha.fit' image 0
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-002-ha.fit' -> 'ha.fit' image 1
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-003-ha.fit' -> 'ha.fit' image 2
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-004-ha.fit' -> 'ha.fit' image 3
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-005-ha.fit' -> 'ha.fit' image 4
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-006-ha.fit' -> 'ha.fit' image 5
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-007-ha.fit' -> 'ha.fit' image 6
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-008-ha.fit' -> 'ha.fit' image 7
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-009-ha.fit' -> 'ha.fit' image 8
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-010-ha.fit' -> 'ha.fit' image 9
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-011-ha.fit' -> 'ha.fit' image 10
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-012-ha.fit' -> 'ha.fit' image 11
+'C:\Users\Matth\OneDrive\Documents\UMD\classes\sophomore year\Semester 1\ASTR 310\Project 1\ASTR310_P1\data\20241017_07in_A310_NGC604\science\NGC604-013-ha.fit' -> 'ha.fit' image 12

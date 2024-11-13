@@ -1,0 +1,18 @@
+#Siril sequence file. Contains list of images, selection, registration data and statistics
+#S 'sequence_name' start_index nb_images nb_selected fixed_len reference_image version variable_size fz_flag
+S 'ha' 0 13 13 0 -1 4 0 0
+TF
+L -1
+I 0 1
+I 1 1
+I 2 1
+I 3 1
+I 4 1
+I 5 1
+I 6 1
+I 7 1
+I 8 1
+I 9 1
+I 10 1
+I 11 1
+I 12 1

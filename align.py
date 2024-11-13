@@ -61,7 +61,7 @@ def trackStar(hduArray, startX, startY, rX=10, rY = 10):
 #function which takes in an array of calibrated light frames and returns an array of aligned frames
 def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
     coords = trackStar(hduArray, guessX, guessY, rX, rY)
-    shifted = []
+    shifted = [hduArray[0]]
     if markup:
         plt.gca().add_patch(patches.Rectangle((guessX, guessY), 1, 1, color="red", fc=(1,0,0,0.3)))
         plt.gca().add_patch(patches.Rectangle((guessX-rX, guessY-rY),2*rX, 2*rY, color="red", fill=False))
