@@ -117,8 +117,10 @@ shifted.append(fits.ImageHDU(rotate_image(align.imshift(O2.data, shift2[1], shif
 shifted.append(fits.ImageHDU(rotate_image(align.imshift(O3.data, shift3[1], shift3[0]),rot3*180/np.pi),O3.header))
 
 O = dataReduce.sum(shifted)
-dispFITS(H,1,1)
-dispFITS(O,1,1)
+dispFITS(H,1,1, "H-alpha")
+dispFITS(O,1,1, "O-III")
 
+fits.writeto("H.fit", H.data, H.header, overwrite=True)
+fits.writeto("O.fit", O.data, O.header, overwrite=True)
 
 plt.show()
