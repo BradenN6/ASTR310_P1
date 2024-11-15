@@ -130,6 +130,7 @@ dispFITS(H,1,1,"H")
 
 
 dispFITS(O,1,1,"O")
-for c in coordsO:
-    photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True,1)
+photometry(O.data, coordsO[0][0],coordsO[0][1],10,20,50,100,60,120,30, np.pi/4,True,1)
+# for c in coordsO:
+#     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True,1)
 plt.show()

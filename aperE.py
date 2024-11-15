@@ -118,7 +118,7 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
     innerTestPts = np.mgrid[int(X-innerSquareR):int(X+innerSquareR), int(Y-innerSquareR):int(Y+innerSquareR)]
     #list of [x,y] pixel coordinates for pixels on the edge of the target ellipse
     if verbose>0 and markupImage:
-        plt.gca().add_patch(patches.Rectangle([X-innerSquareR,Y-innerSquareR],2*innerSquareR,2*innerSquareR,color="blue"))
+        plt.gca().add_patch(patches.Rectangle([X-innerSquareR,Y-innerSquareR],2*innerSquareR,2*innerSquareR,color="blue",fill=False))
 
     targetEdge = []
     for t in np.linspace(0,2*np.pi,int(628*innerSquareR)):
@@ -126,18 +126,24 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
         #Formulae derived using the parametric form of an ellipse and complex multiplication for rotation
         x = np.floor(radX*np.cos(t)*np.cos(angle)-radY*np.sin(t)*np.sin(angle)+X)
         y = np.floor(radY*np.sin(t)*np.cos(angle)+radX*np.cos(t)*np.sin(angle)+Y)
+        x2 = np.floor((radX+0.05)*np.cos(t)*np.cos(angle)-(radY+0.05)*np.sin(t)*np.sin(angle)+X)
+        y2 = np.floor((radY+0.05)*np.sin(t)*np.cos(angle)+(radX+0.05)*np.cos(t)*np.sin(angle)+Y)
         #Only add new edge pixels to array
         if [x,y] not in targetEdge:
             targetEdge.append([x,y])
             if verbose>0: #mark edge pixel if requested
                 plt.gca().add_patch(patches.Rectangle([x, y],1,1,color="darkgreen", fc=(0,0.5,0,0.3)))
+        if [x2,y2] not in targetEdge:
+            targetEdge.append([x2,y2])
+            if verbose>0: #mark edge pixel if requested
+                plt.gca().add_patch(patches.Rectangle([x2, y2],1,1,color="darkgreen", fc=(0,0.5,0,0.3)))
     interiorPts = [] #[x,y] pixel coordinates for piexls inside the target ellipse
     #for each pixel in a grid around the target ellipse, test to see if they are inside the ellipse, and if they are
     #and they are not part of the edge, add them to the interior points array.
     for x in range(innerTestPts[0,0,0],innerTestPts[0,-1,0]):
         for y in range(innerTestPts[1,0,0],innerTestPts[1,0,-1]):
-            x_transformed = ((x-X)*np.cos(-angle)-(y-Y)*np.sin(-angle))/radX
-            y_transformed = ((y-Y)*np.cos(-angle)+(x-X)*np.sin(-angle))/radY
+            x_transformed = ((x-X)*np.cos(-angle)-(y-Y)*np.sin(-angle))/(radX+0.04)
+            y_transformed = ((y-Y)*np.cos(-angle)+(x-X)*np.sin(-angle))/(radY+0.04)
             if ((x_transformed)**2 + (y_transformed)**2) <= 1 and [x,y] not in targetEdge:
                 interiorPts.append([x,y])
                 if verbose>0:
@@ -152,14 +158,26 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
         yi = np.floor(irY*np.sin(t)*np.cos(angle)+irX*np.cos(t)*np.sin(angle)+Y)
         xo = np.floor(orX*np.cos(t)*np.cos(angle)-orY*np.sin(t)*np.sin(angle)+X)
         yo = np.floor(orY*np.sin(t)*np.cos(angle)+orX*np.cos(t)*np.sin(angle)+Y)
+        xi2 = np.floor((irX-0.05)*np.cos(t)*np.cos(angle)-(irY-0.05)*np.sin(t)*np.sin(angle)+X)
+        yi2 = np.floor((irY-0.05)*np.sin(t)*np.cos(angle)+(irX-0.05)*np.cos(t)*np.sin(angle)+Y)
+        xo2 = np.floor((orX+0.05)*np.cos(t)*np.cos(angle)-(orY+0.05)*np.sin(t)*np.sin(angle)+X)
+        yo2 = np.floor((orY+0.05)*np.sin(t)*np.cos(angle)+(orX+0.05)*np.cos(t)*np.sin(angle)+Y)
         if [xi, yi] not in annulusEdge:
             annulusEdge.append([xi,yi])
             if verbose>0:
                 plt.gca().add_patch(patches.Rectangle([xi, yi],1,1,color="red",fc=(0.5, 0, 0, 0.3)))
+        if [xi2, yi2] not in annulusEdge:
+            annulusEdge.append([xi2,yi2])
+            if verbose>0:
+                plt.gca().add_patch(patches.Rectangle([xi2, yi2],1,1,color="red",fc=(0.5, 0, 0, 0.3)))
         if [xo, yo] not in annulusEdge:
             annulusEdge.append([xo,yo])
             if verbose>0:
                 plt.gca().add_patch(patches.Rectangle([xo, yo],1,1,color="blue",fc=(0, 0, 0.5, 0.3)))
+        if [xo2, yo2] not in annulusEdge:
+            annulusEdge.append([xo2,yo2])
+            if verbose>0:
+                plt.gca().add_patch(patches.Rectangle([xo2, yo2],1,1,color="blue",fc=(0, 0, 0.5, 0.3)))
     annulusInterior = []
     for x in range(annulusTestPts[0,0,0],annulusTestPts[0,-1,0]):
         for y in range(annulusTestPts[1,0,0],annulusTestPts[1,0,-1]):
