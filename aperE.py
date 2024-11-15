@@ -117,6 +117,9 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
     innerSquareR = np.max([radX, radY])
     innerTestPts = np.mgrid[int(X-innerSquareR):int(X+innerSquareR), int(Y-innerSquareR):int(Y+innerSquareR)]
     #list of [x,y] pixel coordinates for pixels on the edge of the target ellipse
+    if verbose>0 and markupImage:
+        plt.gca().add_patch(patches.Rectangle([X-innerSquareR,Y-innerSquareR],2*innerSquareR,2*innerSquareR,color="blue"))
+
     targetEdge = []
     for t in np.linspace(0,2*np.pi,int(628*innerSquareR)):
         #the x and y coordinates for a bunch of points along the ellipse. 

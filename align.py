@@ -5,6 +5,7 @@ import matplotlib.patches as patches
 from astropy.io import fits
 
 
+
 figNum = 1
 def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None):
     global figNum
@@ -76,3 +77,4 @@ def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
   
     return shifted
             
+
