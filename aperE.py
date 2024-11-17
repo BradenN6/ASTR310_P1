@@ -115,10 +115,10 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
 
     #create a grid of pixels to test for if they are inside the target ellipse
     innerSquareR = np.max([radX, radY])
-    innerTestPts = np.mgrid[int(X-innerSquareR):int(X+innerSquareR), int(Y-innerSquareR):int(Y+innerSquareR)]
+    innerTestPts = np.mgrid[int(X-innerSquareR):int(X+innerSquareR)+1, int(Y-innerSquareR):int(Y+innerSquareR)+1]
     #list of [x,y] pixel coordinates for pixels on the edge of the target ellipse
     if verbose>0 and markupImage:
-        plt.gca().add_patch(patches.Rectangle([X-innerSquareR,Y-innerSquareR],2*innerSquareR,2*innerSquareR,color="blue",fill=False))
+        plt.gca().add_patch(patches.Rectangle([innerTestPts[0,0,0],innerTestPts[1,0,0]],innerTestPts[0,-1,0]-innerTestPts[0,0,0],innerTestPts[1,0,-1]-innerTestPts[1,0,0],color="blue",fill=True))
 
     targetEdge = []
     for t in np.linspace(0,2*np.pi,int(628*innerSquareR)):
@@ -140,8 +140,8 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
     interiorPts = [] #[x,y] pixel coordinates for piexls inside the target ellipse
     #for each pixel in a grid around the target ellipse, test to see if they are inside the ellipse, and if they are
     #and they are not part of the edge, add them to the interior points array.
-    for x in range(innerTestPts[0,0,0],innerTestPts[0,-1,0]):
-        for y in range(innerTestPts[1,0,0],innerTestPts[1,0,-1]):
+    for x in range(innerTestPts[0,0,0],innerTestPts[0,-1,0]+1):
+        for y in range(innerTestPts[1,0,0],innerTestPts[1,0,-1]+1):
             x_transformed = ((x-X)*np.cos(-angle)-(y-Y)*np.sin(-angle))/(radX+0.04)
             y_transformed = ((y-Y)*np.cos(-angle)+(x-X)*np.sin(-angle))/(radY+0.04)
             if ((x_transformed)**2 + (y_transformed)**2) <= 1 and [x,y] not in targetEdge:
@@ -151,7 +151,7 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
     
     #Same series of steps as for the target ellipse, but for the sky annulus
     annulusR = np.max([orX, orY])
-    annulusTestPts = np.mgrid[int(X-annulusR):int(X+annulusR), int(Y-annulusR):int(Y+annulusR)]
+    annulusTestPts = np.mgrid[int(X-annulusR):int(X+annulusR)+1, int(Y-annulusR):int(Y+annulusR)+1]
     annulusEdge=[]
     for t in np.linspace(0,2*np.pi,628*annulusR): #two sets of edges for an annulus
         xi = np.floor(irX*np.cos(t)*np.cos(angle)-irY*np.sin(t)*np.sin(angle)+X)
@@ -179,8 +179,8 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
             if verbose>0:
                 plt.gca().add_patch(patches.Rectangle([xo2, yo2],1,1,color="blue",fc=(0, 0, 0.5, 0.3)))
     annulusInterior = []
-    for x in range(annulusTestPts[0,0,0],annulusTestPts[0,-1,0]):
-        for y in range(annulusTestPts[1,0,0],annulusTestPts[1,0,-1]):
+    for x in range(annulusTestPts[0,0,0],annulusTestPts[0,-1,0]+1):
+        for y in range(annulusTestPts[1,0,0],annulusTestPts[1,0,-1]+1):
             x_transformed1 = ((x-X)*np.cos(-angle)-(y-Y)*np.sin(-angle))/irX
             y_transformed1 = ((y-Y)*np.cos(-angle)+(x-X)*np.sin(-angle))/irY
             x_transformed2 = ((x-X)*np.cos(-angle)-(y-Y)*np.sin(-angle))/orX
