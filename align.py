@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from astropy.io import fits
-
+import scipy.ndimage as ndimage
+import dataReduce
 
 
 figNum = 1
@@ -36,6 +37,10 @@ def imshift(im,nr,nc):
     c2=min(b,nc+b)
     imr[r1:r2, c1:c2] = im[ir1:ir2, it1:it2]
     return imr
+
+def rotate_image(image_array, angle):
+    """Rotates an image array by a specified angle (in degrees)."""
+    return ndimage.rotate(image_array, angle, reshape=False)
 
 #finds the coordinates of a the greatest ADU value in a range of values in a fits image.
 def findMaxPixelCoord(data, guessX, guessY, rX, rY):
@@ -77,4 +82,48 @@ def alignFrames(hduArray, guessX, guessY, rX=10, rY=10, markup = False):
   
     return shifted
             
+# Manually aligning and rotating the Ha and OIII images
+# from each dataset into single combined Ha and OIII images
+def align_datasets(Ha1, Ha2, Ha3, O1, O2, O3, SC):
+    SCH1, SCO1, SCH2, SCO2, SCH3, SCO3 = SC
 
+    #SCH1 = (1501, 827)
+    #SCO1 = (1507, 826)
+    #SCH2 = (1240, 908)
+    #SCO2 = (1238, 909)
+    #SCH3 = (1227, 890)
+    #SCO3 = (1225, 890)
+
+    RS1 = (660, 547)
+    RS2 = (401, 622)
+    RS3 = (388, 602)
+
+    H1x2, H1y2 = findMaxPixelCoord(Ha1.data, RS1[0], RS1[1],10,10)
+    H2x2, H2y2 = findMaxPixelCoord(Ha2.data, RS2[0], RS2[1],10,10)
+    H3x2, H3y2 = findMaxPixelCoord(Ha3.data, RS3[0], RS3[1],10,10)
+
+    H1x, H1y = findMaxPixelCoord(Ha1.data, SCH1[0],SCH1[1],10,10)
+    H2x, H2y = findMaxPixelCoord(Ha2.data, SCH2[0],SCH2[1],10,10)
+    H3x, H3y = findMaxPixelCoord(Ha3.data, SCH3[0],SCH3[1],10,10)
+
+    shift2 = (H1x-H2x,H1y-H2y)
+    shift3 = (H1x-H3x,H1y-H3y)
+    angle1 = np.atan2(H1y2-H1y, H1x2-H1x)
+    angle2 = np.atan2(H2y2-H2y, H2x2-H2x)
+    angle3 = np.atan2(H3y2-H3y, H3x2-H3x)
+    rot2 = angle2-angle1
+    rot3 = angle3-angle1
+
+    shifted = [Ha1]
+    shifted.append(fits.ImageHDU(rotate_image(imshift(Ha2.data, shift2[1], shift2[0]),rot2*180/np.pi),Ha2.header))
+    shifted.append(fits.ImageHDU(rotate_image(imshift(Ha3.data, shift3[1], shift3[0]),rot3*180/np.pi),Ha3.header))
+    H = dataReduce.sum(shifted)
+    shifted = [O1]
+    shifted.append(fits.ImageHDU(rotate_image(imshift(O2.data, shift2[1], shift2[0]),rot2*180/np.pi),O2.header))
+    shifted.append(fits.ImageHDU(rotate_image(imshift(O3.data, shift3[1], shift3[0]),rot3*180/np.pi),O3.header))
+
+    O = dataReduce.sum(shifted)
+    #dispFITS(H,1,1, "H-alpha")
+    #dispFITS(O,1,1, "O-III")
+
+    return H, O
