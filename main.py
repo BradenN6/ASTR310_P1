@@ -7,6 +7,7 @@ from align import dispFITS
 import calibration as calib
 import scipy.ndimage as ndimage
 from aperE import photometry
+import size
 
 def zeroPadLeft(size, index):
     index = str(index)
@@ -129,8 +130,11 @@ O = fits.open("O.fit")[0]
 dispFITS(H,1,1,"H")
 
 
+
 dispFITS(O,1,1,"O")
-photometry(O.data, coordsO[0][0],coordsO[0][1],10,20,50,100,60,120,30, np.pi/4,True,1)
+
+rX, rY = size.findSize(O.data,coordsO[0][0],coordsO[0][1],52,50,70,65)
+photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
 # for c in coordsO:
-#     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True,1)
+#     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True)
 plt.show()
