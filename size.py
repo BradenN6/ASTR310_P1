@@ -84,7 +84,7 @@ def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, subsamplerate=10):
     switched = False
     axis = 0 #0=X, 1=Y
 
-    print(sky)
+    print(sky,s_sky)
     while True:
         stepVal, stepPix, stepP, s_stepVal = annulus(data, X, Y,innerX, innerY,innerX+(axis==0), innerY+(axis==1), angle, subsamplerate)
         if stepVal*stepPix-sky*stepPix > 5 * np.sqrt(stepPix)*s_sky:
