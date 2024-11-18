@@ -155,7 +155,7 @@ def photometry(data, X, Y, radX, radY, irX, irY, orX, orY, gain, angle=0, markup
     annulusR = np.max([orX, orY])
     annulusTestPts = np.mgrid[int(X-annulusR):int(X+annulusR)+1, int(Y-annulusR):int(Y+annulusR)+1]
     annulusEdge=[]
-    for t in np.linspace(0,2*np.pi,628*annulusR): #two sets of edges for an annulus
+    for t in np.linspace(0,2*np.pi,int(628*annulusR)): #two sets of edges for an annulus
         xi = np.floor(irX*np.cos(t)*np.cos(angle)-irY*np.sin(t)*np.sin(angle)+X)
         yi = np.floor(irY*np.sin(t)*np.cos(angle)+irX*np.cos(t)*np.sin(angle)+Y)
         xo = np.floor(orX*np.cos(t)*np.cos(angle)-orY*np.sin(t)*np.sin(angle)+X)

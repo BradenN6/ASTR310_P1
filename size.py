@@ -8,7 +8,7 @@ def annulus(data, X, Y, irX, irY, orX, orY, angle=0, subsampleRate=10):
     annulusR = np.max([orX, orY])
     annulusTestPts = np.mgrid[int(X-annulusR):int(X+annulusR)+1, int(Y-annulusR):int(Y+annulusR)+1]
     annulusEdge=[]
-    for t in np.linspace(0,2*np.pi,628*annulusR): #two sets of edges for an annulus
+    for t in np.linspace(0.,2*np.pi,int(628*annulusR)): #two sets of edges for an annulus
         xi = np.floor(irX*np.cos(t)*np.cos(angle)-irY*np.sin(t)*np.sin(angle)+X)
         yi = np.floor(irY*np.sin(t)*np.cos(angle)+irX*np.cos(t)*np.sin(angle)+Y)
         xo = np.floor(orX*np.cos(t)*np.cos(angle)-orY*np.sin(t)*np.sin(angle)+X)
@@ -75,7 +75,7 @@ def annulus(data, X, Y, irX, irY, orX, orY, angle=0, subsampleRate=10):
     return skyValue, skyPixels, s_sky, s_skyValue
 
 
-def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, subsamplerate=10):
+def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, sigma=5, subsamplerate=10):
     sky, skyPixels, s_skyP, s_skyValue = annulus(data, X, Y, sirx, siry, sorx, sory, angle, subsamplerate)
     s_sky = np.sqrt(s_skyP**2 + s_skyValue**2)
 
@@ -87,7 +87,7 @@ def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, subsamplerate=10):
     print(sky,s_sky)
     while True:
         stepVal, stepPix, stepP, s_stepVal = annulus(data, X, Y,innerX, innerY,innerX+(axis==0), innerY+(axis==1), angle, subsamplerate)
-        if stepVal*stepPix-sky*stepPix > 5 * np.sqrt(stepPix)*s_sky:
+        if stepVal*stepPix-sky*stepPix > sigma * np.sqrt(stepPix)*s_sky:
             if axis == 0:
                 innerX += 1
             else:

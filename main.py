@@ -9,6 +9,7 @@ import calibration as calib
 import scipy.ndimage as ndimage
 from aperE import photometry
 import size
+import csv
 
 def zeroPadLeft(size, index):
     index = str(index)
@@ -136,18 +137,18 @@ Brightness Analysis
 '''
 
 # Clockwise angle
-coordsH = [[1408,572,110,110,140,140,0],
-           [509,198,130,120,160,170,np.pi/4],
-           [1508,190,50,80,100,110,-np.pi/6],
-           [960,888,50,50,70,70,0],
-           [786,1255,40,40,60,60,0],
-           [1901,142,60,90,100,120,-np.pi/8]]
-coordsO = [[1406,570,52,50,70,65,0],
-           [509,198,50,50,70,70, np.pi/4],
-           [1506,201,50,50,70,80,0],
-           [959,887,40,40,70,70,0],
-           [780,1251,45,45,60,60,0],
-           [1896,151,30,35,60,50,np.pi/8]
+coordsH = [[1408.,572.,110.,110.,140.,140.,0],
+           [509.,198.,130.,120.,160.,170.,np.pi/4],
+           [1508.,190.,50.,80.,100.,110.,-np.pi/6],
+           [960.,888.,50.,50.,70.,70.,0],
+           [786.,1255.,40.,40.,60.,60.,0],
+           [1901.,142.,60.,90.,100.,120.,-np.pi/8]]
+coordsO = [[1406,570.,52.,50.,70.,65.,0],
+           [509.,198.,50.,50.,70.,70., np.pi/4],
+           [1506.,201.,50.,50.,70.,80.,0],
+           [959.,887.,40.,40.,70.,70.,0],
+           [780.,1251.,45.,45.,60.,60.,0],
+           [1896.,151.,30.,35.,60.,50.,np.pi/8]
            ]
 
 H = fits.open("H.fit")[0]
@@ -167,7 +168,25 @@ Size Analysis
 
 #rX, rY = size.findSize(O.data,coordsO[0][0],coordsO[0][1],52,50,70,65)
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
+dataO = []
+dataH = []
+for c in coordsO:
+     rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
+     dataO.append([c[0],c[1],rX,rY,e,s_e])
+     print(dataO[-1])
 for c in coordsH:
-    drawRings(c[0],c[1],1,1,c[2],c[3],c[4],c[5],c[6])
-#     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True)
+    rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+    photometry(H.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
+    dataH.append([c[0],c[1],rX,rY,e,s_e])
+    print(dataH[-1])
+with open("photometry.csv", "w", newline="") as csvfile:
+    writer = csv.writer(csvfile, delimiter=",",quotechar="|",quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(["X", "Y", "rX", "rY", "e", "s_e"])
+    for i in range(len(dataO)):
+        writer.writerow([dataO[i][0], dataO[i][1],dataO[i][2],dataO[i][3],dataO[i][4],dataO[i][5]])
+    for i in range(len(dataH)):
+        writer.writerow([dataH[i][0], dataH[i][1],dataO[i][2],dataH[i][3],dataH[i][4],dataH[i][5]])
+print(dataO)
+print(dataH)
 plt.show()
