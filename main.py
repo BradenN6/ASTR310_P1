@@ -159,7 +159,7 @@ dispFITS(H,1,1,"H")
 
 
 
-#dispFITS(O,0.2,0.3,"O")
+dispFITS(O,0.2,0.3,"O")
 
 
 '''
