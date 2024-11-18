@@ -30,7 +30,7 @@ def aper_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range, angle):
 
     return coords, apertures, vals
 
-def aperE_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range, rad_step):
+def aperE_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range, rad_step, markup=True):
     '''
     Given lightHDU (FITS[0]), center coords of the object (x, y), and
     a list of test apertures. Uses the aperE function to output a list
@@ -51,7 +51,7 @@ def aperE_driver(lightHDU, coords, base_aperture, rad1_range, rad2_range, rad_st
     err_arr = []
     for aperture in apertures:
         flux, err = aperE.aperE(img, coords[0], coords[1], aperture[0], aperture[1], \
-                          aperture[2], aperture[3], aperture[4], aperture[5], Kccd)
+                          aperture[2], aperture[3], aperture[4], aperture[5], Kccd, markup=markup)
         
         flux_arr.append(flux)
         err_arr.append(err)
