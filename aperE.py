@@ -76,7 +76,7 @@ def aperE(im, col, row, rad1, rad2, ir1, ir2, or1, or2, Kccd, saturation=np.inf)
         print('short exposures, check in one of them to see if this message appears.')
         print('If it does, you need to flag the source as bad in this output file.')
     plt.tight_layout()
-    plt.savefig("aperE_img.pdf")
+    #plt.savefig("aperE_img.pdf")
     return flx, err
 
 
