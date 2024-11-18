@@ -154,7 +154,7 @@ coordsO = [[1406,570.,52.,50.,70.,65.,0],
 H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
-dispFITS(H,1,1,"H")
+
 
 
 
@@ -175,6 +175,7 @@ for c in coordsO:
      e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
      dataO.append([c[0],c[1],rX,rY,e,s_e])
      print(dataO[-1])
+dispFITS(H,1,1,"H")
 for c in coordsH:
     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
     photometry(H.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
