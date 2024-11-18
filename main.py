@@ -27,7 +27,7 @@ SC = (SCH1, SCO1, SCH2, SCO2, SCH3, SCO3)
 '''
 Image Calibration
 '''
-
+'''
 ###########################
 # First Data Set 10/08/2024
 
@@ -114,7 +114,7 @@ dispFITS(O,1,1, "O-III")
 
 fits.writeto("H.fit", H.data, H.header, overwrite=True)
 fits.writeto("O.fit", O.data, O.header, overwrite=True)
-
+'''
 
 '''
 Brightness Analysis
