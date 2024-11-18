@@ -79,8 +79,8 @@ def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, sigma=5, subsamplerate
     sky, skyPixels, s_skyP, s_skyValue = annulus(data, X, Y, sirx, siry, sorx, sory, angle, subsamplerate)
     s_sky = np.sqrt(s_skyP**2 + s_skyValue**2)
 
-    innerX=1
-    innerY=1
+    innerX=2
+    innerY=2
     switched = False
     axis = 0 #0=X, 1=Y
 

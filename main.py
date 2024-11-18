@@ -172,13 +172,13 @@ dataO = []
 dataH = []
 for c in coordsO:
      rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
+     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
      dataO.append([c[0],c[1],rX,rY,e,s_e])
      print(dataO[-1])
 dispFITS(H,1,1,"H")
 for c in coordsH:
     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-    photometry(H.data,c[0],c[1],rX,rY,c[1],c[2],c[3],c[4],c[5],c[6],True)
+    photometry(H.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
     dataH.append([c[0],c[1],rX,rY,e,s_e])
     print(dataH[-1])
 with open("photometry.csv", "w", newline="") as csvfile:
