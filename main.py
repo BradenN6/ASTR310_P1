@@ -135,8 +135,13 @@ fits.writeto("O.fit", O.data, O.header, overwrite=True)
 Brightness Analysis
 '''
 
-
-coordsH = [[1408,572,0]]
+# Clockwise angle
+coordsH = [[1408,572,110,110,140,140,0],
+           [509,198,130,120,160,170,np.pi/4],
+           [1508,190,50,80,100,110,-np.pi/6],
+           [960,888,50,50,70,70,0],
+           [786,1255,40,40,60,60,0],
+           [1901,142,60,90,100,120,-np.pi/8]]
 coordsO = [[1406,570,52,50,70,65,0],
            [509,198,50,50,70,70,-np.pi/4]
            ]
@@ -144,12 +149,12 @@ coordsO = [[1406,570,52,50,70,65,0],
 H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
-#dispFITS(H,1,1,"H")
+dispFITS(H,1,1,"H")
 
 
 
 
-dispFITS(O,0.2,0.3,"O")
+#dispFITS(O,0.2,0.3,"O")
 
 
 '''
@@ -158,7 +163,7 @@ Size Analysis
 
 #rX, rY = size.findSize(O.data,coordsO[0][0],coordsO[0][1],52,50,70,65)
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
-for c in coordsO:
+for c in coordsH:
     drawRings(c[0],c[1],1,1,c[2],c[3],c[4],c[5],c[6])
 #     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True)
 plt.show()
