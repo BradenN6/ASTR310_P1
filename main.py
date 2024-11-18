@@ -1,6 +1,7 @@
 from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import align
 import dataReduce
 from align import dispFITS
@@ -23,6 +24,20 @@ SCH3 = (1227, 890)
 SCO3 = (1225, 890)
 
 SC = (SCH1, SCO1, SCH2, SCO2, SCH3, SCO3)
+
+def drawRings(X, Y, radX, radY, irX, irY, orX, orY, angle=0):
+    #target ellipse
+    targetEllipse = patches.Ellipse([X,Y],2*radX, 2*radY,fill=False,color="green")
+    targetEllipse.set_angle(angle*180/np.pi)
+    plt.gca().add_patch(targetEllipse)
+    #inner ellipse for the sky annulus
+    innerEllipse = patches.Ellipse([X,Y],2*irX, 2*irY,fill=False,color="blue")
+    innerEllipse.set_angle(angle*180/np.pi)
+    plt.gca().add_patch(innerEllipse)
+    #outter ellipse for the sky annulus
+    outerEllipse = patches.Ellipse([X,Y],2*orX, 2*orY,fill=False,color="red")
+    outerEllipse.set_angle(angle*180/np.pi)
+    plt.gca().add_patch(outerEllipse)
 
 '''
 Image Calibration
@@ -122,17 +137,19 @@ Brightness Analysis
 
 
 coordsH = [[1408,572,0]]
-coordsO = [[1406,570,0],[510,198,-np.pi/4],[1014,603,0]]
+coordsO = [[1406,570,52,50,70,65,0],
+           [509,198,50,50,70,70,-np.pi/4]
+           ]
 
 H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
-dispFITS(H,1,1,"H")
+#dispFITS(H,1,1,"H")
 
 
 
 
-dispFITS(O,1,1,"O")
+dispFITS(O,0.2,0.3,"O")
 
 
 '''
@@ -141,6 +158,7 @@ Size Analysis
 
 #rX, rY = size.findSize(O.data,coordsO[0][0],coordsO[0][1],52,50,70,65)
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
-# for c in coordsO:
+for c in coordsO:
+    drawRings(c[0],c[1],1,1,c[2],c[3],c[4],c[5],c[6])
 #     photometry(O.data,c[0],c[1],10,10,50,50,60,60,30,c[2],True)
 plt.show()
