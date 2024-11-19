@@ -155,7 +155,7 @@ H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
 
-#determined size of NGC 604 in Ha is 77,105, manually shifted to not include stars
+#determined size of NGC 604 in Ha is 77,105, manually shifted to not include stars #new is 60,90
 
 
 
@@ -177,7 +177,7 @@ dataH = []
 # dispFITS(H,1,1,"H")
 # for c in coordsH:
 #     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-#     photometry(H.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
+#     e, s_e photometry(H.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
 #     dataH.append([c[0],c[1],rX,rY,e,s_e])
 #     print(dataH[-1])
 # with open("photometry.csv", "w", newline="") as csvfile:
@@ -194,7 +194,9 @@ phot = np.genfromtxt("photometry.csv", delimiter=",", skip_header=1,usecols=(0,1
 dispFITS(O,0.2,0.3,"O")
 for i in range(6):
     e, s_e =photometry(O.data,coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][2],coordsO[i][3],coordsO[i][4],coordsO[i][5],1.3,coordsO[i][6],True)
+    print(e,s_e)
 dispFITS(H,1,1,"H")
 for i in range(6):
     e, s_e =photometry(O.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
+    print(e,s_e)
 plt.show()
