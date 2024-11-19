@@ -197,6 +197,6 @@ for i in range(6):
     print(e/.67,np.sqrt((s_e/.67)**2+(e*.02/(.67)**2)**2))
 dispFITS(H,1,1,"H")
 for i in range(6):
-    e, s_e =photometry(O.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
+    e, s_e =photometry(H.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
     print(e/.85,np.sqrt((s_e/.85)**2+(e*.02/(.67)**2)**2))
 plt.show()
