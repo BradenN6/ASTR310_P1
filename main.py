@@ -194,9 +194,9 @@ phot = np.genfromtxt("photometry.csv", delimiter=",", skip_header=1,usecols=(0,1
 dispFITS(O,0.2,0.3,"O")
 for i in range(6):
     e, s_e =photometry(O.data,coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][2],coordsO[i][3],coordsO[i][4],coordsO[i][5],1.3,coordsO[i][6],True)
-    print(e,s_e)
+    print(e/.67,np.sqrt((s_e/.67)**2+(e*.02/(.67)**2)**2))
 dispFITS(H,1,1,"H")
 for i in range(6):
     e, s_e =photometry(O.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
-    print(e,s_e)
+    print(e/.85,np.sqrt((s_e/.85)**2+(e*.02/(.67)**2)**2))
 plt.show()
