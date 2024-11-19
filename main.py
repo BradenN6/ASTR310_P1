@@ -155,11 +155,9 @@ H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
 
+#determined size of NGC 604 in Ha is 77,105, manually shifted to not include stars
 
 
-
-
-dispFITS(O,0.2,0.3,"O")
 
 
 '''
@@ -170,24 +168,33 @@ Size Analysis
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
 dataO = []
 dataH = []
-for c in coordsO:
-     rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
-     dataO.append([c[0],c[1],rX,rY,e,s_e])
-     print(dataO[-1])
+# dispFITS(O,0.2,0.3,"O")
+# for c in coordsO:
+#      rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+#      e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
+#      dataO.append([c[0],c[1],rX,rY,e,s_e])
+#      print(dataO[-1])
+# dispFITS(H,1,1,"H")
+# for c in coordsH:
+#     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+#     photometry(H.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
+#     dataH.append([c[0],c[1],rX,rY,e,s_e])
+#     print(dataH[-1])
+# with open("photometry.csv", "w", newline="") as csvfile:
+#     writer = csv.writer(csvfile, delimiter=",",quotechar="|",quoting=csv.QUOTE_MINIMAL)
+#     writer.writerow(["X", "Y", "rX", "rY", "e", "s_e"])
+#     for i in range(len(dataO)):
+#         writer.writerow([dataO[i][0], dataO[i][1],dataO[i][2],dataO[i][3],dataO[i][4],dataO[i][5]])
+#     for i in range(len(dataH)):
+#         writer.writerow([dataH[i][0], dataH[i][1],dataH[i][2],dataH[i][3],dataH[i][4],dataH[i][5]])
+# print(dataO)
+# print(dataH)
+phot = np.genfromtxt("photometry.csv", delimiter=",", skip_header=1,usecols=(0,1,2,3,4,5))
+
+dispFITS(O,0.2,0.3,"O")
+for i in range(6):
+    e, s_e =photometry(O.data,coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][2],coordsO[i][3],coordsO[i][4],coordsO[i][5],1.3,coordsO[i][6],True)
 dispFITS(H,1,1,"H")
-for c in coordsH:
-    rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-    photometry(H.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
-    dataH.append([c[0],c[1],rX,rY,e,s_e])
-    print(dataH[-1])
-with open("photometry.csv", "w", newline="") as csvfile:
-    writer = csv.writer(csvfile, delimiter=",",quotechar="|",quoting=csv.QUOTE_MINIMAL)
-    writer.writerow(["X", "Y", "rX", "rY", "e", "s_e"])
-    for i in range(len(dataO)):
-        writer.writerow([dataO[i][0], dataO[i][1],dataO[i][2],dataO[i][3],dataO[i][4],dataO[i][5]])
-    for i in range(len(dataH)):
-        writer.writerow([dataH[i][0], dataH[i][1],dataO[i][2],dataH[i][3],dataH[i][4],dataH[i][5]])
-print(dataO)
-print(dataH)
+for i in range(6):
+    e, s_e =photometry(O.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
 plt.show()
