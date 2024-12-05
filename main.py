@@ -43,7 +43,7 @@ def drawRings(X, Y, radX, radY, irX, irY, orX, orY, angle=0):
 '''
 Image Calibration
 '''
-'''
+
 ###########################
 # First Data Set 10/08/2024
 
@@ -130,7 +130,7 @@ dispFITS(O,1,1, "O-III")
 
 fits.writeto("H.fit", H.data, H.header, overwrite=True)
 fits.writeto("O.fit", O.data, O.header, overwrite=True)
-'''
+
 
 '''
 Brightness Analysis

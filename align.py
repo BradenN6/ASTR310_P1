@@ -6,6 +6,9 @@ from astropy.io import fits
 import scipy.ndimage as ndimage
 import dataReduce
 
+'''
+Code for aligning images
+'''
 
 figNum = 1
 def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None):

@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from align import dispFITS
 
+'''
+Generating some figures
+'''
+
 H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 DS1_Ha = fits.open('DS-1_Ha.fit')[0]
