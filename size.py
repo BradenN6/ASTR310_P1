@@ -2,6 +2,10 @@ import numpy as np
 from aperE import photometry
 from align import dispFITS
 
+'''
+Size determination code through edge-detection.
+'''
+
 #returns the average sky value, the number of pixels, the error in the individual sky value, and the error in the average sky value
 #all values are in ADU
 def annulus(data, X, Y, irX, irY, orX, orY, angle=0, subsampleRate=10):

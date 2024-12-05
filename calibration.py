@@ -2,6 +2,10 @@ from astropy.io import fits
 import matplotlib.pyplot as plt
 import numpy as np
 
+'''
+Calibration routines
+'''
+
 
 # Display image given by the FITS file
 # Vary vmin and vmax until image is visible 

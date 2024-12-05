@@ -109,9 +109,4 @@ def surface_plot(vals, base_aperture, rad1_range, rad2_range, rad_step, type=0):
         #surf = ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.1)
         #fig.colorbar(surf)#, shrink=0.5, aspect=5)
 
-
-# TODO
-# Aperture photometry on nebulae
-# testing apertures
-# 3d-plot SNR to determine aperture to use
     
