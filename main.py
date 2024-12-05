@@ -43,7 +43,7 @@ def drawRings(X, Y, radX, radY, irX, irY, orX, orY, angle=0):
 '''
 Image Calibration
 '''
-
+"""
 ###########################
 # First Data Set 10/08/2024
 
@@ -88,7 +88,7 @@ aligned = align.alignFrames(c_oLights, SCO2[0], SCO2[1])
 addedFits = dataReduce.sum(aligned)
 dispFITS(addedFits, 1, 1, "Added Session 2 O[III]")
 fits.writeto("DS-2_OIII.fit",addedFits.data, addedFits.header, overwrite=True)
-
+"""
 ###########################
 # Third Data Set 10/27/2024
 
@@ -106,10 +106,12 @@ addedFits = dataReduce.sum(aligned)
 dispFITS(addedFits, 1, 1, "Added Session 3 Ha")
 fits.writeto("DS-3_Ha.fit",addedFits.data, addedFits.header, overwrite=True)
 
+
 aligned = align.alignFrames(c_oLights, SCO3[0], SCO3[1])
 addedFits = dataReduce.sum(aligned)
 dispFITS(addedFits, 1, 1, "Added Session 3 O[III]")
 fits.writeto("DS-3_OIII.fit",addedFits.data, addedFits.header, overwrite=True)
+
 
 ###########################
 # Align/Co-add All Datasets
@@ -167,18 +169,15 @@ O = fits.open("O.fit")[0]
 '''
 Size Analysis
 '''
-
 #rX, rY = size.findSize(O.data,coordsO[0][0],coordsO[0][1],52,50,70,65)
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
-dataO = []
-dataH = []
-dispFITS(O, 0.5, 0.5,"[O III] Photometry",16,14)
-for c in coordsO:
-     rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
-     dataO.append([c[0],c[1],rX,rY,e,s_e])
-     print(dataO[-1])
-plt.savefig("OIII-annuli.png",dpi=700)
+# dataO = []
+# dataH = []
+# for c in coordsO:
+#      rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+#      e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
+#      dataO.append([c[0],c[1],rX,rY,e,s_e])
+#      print(dataO[-1])
 # dispFITS(H,1,1,"H")
 # for c in coordsH:
 #     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
