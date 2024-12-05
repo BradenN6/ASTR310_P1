@@ -11,17 +11,17 @@ Code for aligning images
 '''
 
 figNum = 1
-def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None):
+def dispFITS(hdu, medMinCoeff, medMaxCoeff, title=None,titleSize=10,axisSize=10):
     global figNum
     plt.figure(figsize=[6,6])
     fig = plt.imshow(hdu.data,vmin=np.median(hdu.data)-medMinCoeff*np.std(hdu.data),vmax=np.median(hdu.data)+medMaxCoeff*np.std(hdu.data),cmap='plasma',extent=(0,hdu.header["NAXIS1"],hdu.header["NAXIS2"],0))
     plt.colorbar(fig,fraction=0.046,pad=0.04)
     if title == None:
-        plt.title("Figure " + str(figNum))
+        plt.title("Figure " + str(figNum),fontsize=titleSize)
     else:
-        plt.title(title)
-    plt.xlabel("Pixel x coordinate")
-    plt.ylabel("Pixel y coordinate")
+        plt.title(title,fontsize=titleSize)
+    plt.xlabel("Pixel x coordinate",fontsize=axisSize)
+    plt.ylabel("Pixel y coordinate",fontsize=axisSize)
     figNum += 1
 
 def imshift(im,nr,nc):

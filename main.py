@@ -54,6 +54,8 @@ calib.calib_driver("data\\20241008_07in_A310_NGC604\\science\\NGC 604-",\
                     "data\\20241008_07in_A310_NGC604\\calibration\\flat-",\
                     "-bi", 1)
 
+
+
 # Align Ha images in the data set, co-add, save
 aligned = align.alignFrames(c_hLights, SCH1[0], SCH1[1],20,20)
 addedFits = dataReduce.sum(aligned)
@@ -96,6 +98,7 @@ calib.calib_driver("data\\20241027_07in_A310_NGC604\\science\\NGC 604-",\
                     "data\\20241027_07in_A310_NGC604\\calibration\\calib-",\
                     "data\\20241027_07in_A310_NGC604\\calibration\\flats-",\
                     "-bi", 3)
+
 
 # Align, co-add, save Ha and OIII
 aligned = align.alignFrames(c_hLights, SCH3[0], SCH3[1])
@@ -155,6 +158,7 @@ H = fits.open("H.fit")[0]
 O = fits.open("O.fit")[0]
 
 
+
 #determined size of NGC 604 in Ha is 77,105, manually shifted to not include stars #new is 60,90
 
 
@@ -168,12 +172,13 @@ Size Analysis
 #photometry(O.data, coordsO[0][0],coordsO[0][1],rX,rY,52,50,70,65,1.3, 0,True)
 dataO = []
 dataH = []
-# dispFITS(O,0.2,0.3,"O")
-# for c in coordsO:
-#      rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
-#      e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
-#      dataO.append([c[0],c[1],rX,rY,e,s_e])
-#      print(dataO[-1])
+dispFITS(O, 0.5, 0.5,"[O III] Photometry",16,14)
+for c in coordsO:
+     rX, rY = size.findSize(O.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
+     e, s_e =photometry(O.data,c[0],c[1],rX,rY,c[2],c[3],c[4],c[5],1.3,c[6],True)
+     dataO.append([c[0],c[1],rX,rY,e,s_e])
+     print(dataO[-1])
+plt.savefig("OIII-annuli.png",dpi=700)
 # dispFITS(H,1,1,"H")
 # for c in coordsH:
 #     rX, rY = size.findSize(H.data,c[0], c[1],c[2],c[3],c[4],c[5],c[6],5)
@@ -189,9 +194,8 @@ dataH = []
 #         writer.writerow([dataH[i][0], dataH[i][1],dataH[i][2],dataH[i][3],dataH[i][4],dataH[i][5]])
 # print(dataO)
 # print(dataH)
-phot = np.genfromtxt("photometry.csv", delimiter=",", skip_header=1,usecols=(0,1,2,3,4,5))
 
-size.findSize(O.data,coordsO[0][0], coordsO[0][1],coordsO[0][2],coordsO[0][3],coordsO[0][4],coordsO[0][5],coordsO[0][6],5)
+#size.findSize(O.data,coordsO[0][0], coordsO[0][1],coordsO[0][2],coordsO[0][3],coordsO[0][4],coordsO[0][5],coordsO[0][6],5)
 
 # dispFITS(O,0.2,0.3,"O")
 # for i in range(6):
@@ -202,4 +206,4 @@ size.findSize(O.data,coordsO[0][0], coordsO[0][1],coordsO[0][2],coordsO[0][3],co
 # for i in range(6):
 #     e, s_e =photometry(H.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
 #     print(coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][6],e/.85,np.sqrt((s_e/.85)**2+(e*.02/(.67)**2)**2))
-#plt.show()
+plt.show()
