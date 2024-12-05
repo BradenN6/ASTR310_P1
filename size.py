@@ -1,6 +1,8 @@
 import numpy as np
 from aperE import photometry
 from align import dispFITS
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 #returns the average sky value, the number of pixels, the error in the individual sky value, and the error in the average sky value
 #all values are in ADU
@@ -85,8 +87,26 @@ def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, sigma=5, subsamplerate
     axis = 0 #0=X, 1=Y
 
     print(sky,s_sky)
+    step = 1
     while True:
         stepVal, stepPix, stepP, s_stepVal = annulus(data, X, Y,innerX, innerY,innerX+(axis==0), innerY+(axis==1), angle, subsamplerate)
+
+        plt.figure(figsize=[6,6])
+        fig = plt.imshow(data[500:620,1300:1500],vmin=np.median(data)-0.5*np.std(data),vmax=np.median(data)+0.6*np.std(data),cmap='plasma',extent=(1300,1500,620,500))
+        plt.colorbar(fig,fraction=0.046,pad=0.04)
+        plt.title("Size determination",fontsize=17)
+        plt.xlabel("Pixel x coordinate",fontsize=15)
+        plt.ylabel("Pixel y coordinate",fontsize=15)
+        #inner ellipse for the sky annulus
+        innerEllipse = patches.Ellipse([X,Y],2*innerX, 2*innerY,fill=False,color="blue")
+        innerEllipse.set_angle(angle*180/np.pi)
+        plt.gca().add_patch(innerEllipse)
+        #outter ellipse for the sky annulus
+        outerEllipse = patches.Ellipse([X,Y],2*(innerX+(axis==0)), 2*(innerY+(axis==1)),fill=False,color="red")
+        outerEllipse.set_angle(angle*180/np.pi)
+        plt.gca().add_patch(outerEllipse)
+        plt.savefig(str(step) + ".png",dpi=900)
+        plt.close()
         if stepVal*stepPix-sky*stepPix > sigma * np.sqrt(stepPix)*s_sky:
             if axis == 0:
                 innerX += 1
@@ -99,5 +119,6 @@ def findSize(data, X, Y, sirx, siry, sorx, sory, angle=0, sigma=5, subsamplerate
             axis = 1-axis
             continue
         switched = False
+        step += 1
 
     return innerX, innerY

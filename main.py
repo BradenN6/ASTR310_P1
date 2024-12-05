@@ -191,13 +191,15 @@ dataH = []
 # print(dataH)
 phot = np.genfromtxt("photometry.csv", delimiter=",", skip_header=1,usecols=(0,1,2,3,4,5))
 
-dispFITS(O,0.2,0.3,"O")
-for i in range(6):
-    e, s_e =photometry(O.data,coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][2],coordsO[i][3],coordsO[i][4],coordsO[i][5],1.3,coordsO[i][6],True)
-    print(coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][6],e/.67,np.sqrt((s_e/.67)**2+(e*.02/(.67)**2)**2))
-dispFITS(H,1,1,"H")
-print()
-for i in range(6):
-    e, s_e =photometry(H.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
-    print(coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][6],e/.85,np.sqrt((s_e/.85)**2+(e*.02/(.67)**2)**2))
-plt.show()
+size.findSize(O.data,coordsO[0][0], coordsO[0][1],coordsO[0][2],coordsO[0][3],coordsO[0][4],coordsO[0][5],coordsO[0][6],5)
+
+# dispFITS(O,0.2,0.3,"O")
+# for i in range(6):
+#     e, s_e =photometry(O.data,coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][2],coordsO[i][3],coordsO[i][4],coordsO[i][5],1.3,coordsO[i][6],True)
+#     print(coordsO[i][0],coordsO[i][1],phot[i,2],phot[i,3],coordsO[i][6],e/.67,np.sqrt((s_e/.67)**2+(e*.02/(.67)**2)**2))
+# dispFITS(H,1,1,"H")
+# print()
+# for i in range(6):
+#     e, s_e =photometry(H.data,coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][2],coordsH[i][3],coordsH[i][4],coordsH[i][5],1.3,coordsH[i][6],True)
+#     print(coordsH[i][0],coordsH[i][1],phot[6+i,2],phot[6+i,3],coordsH[i][6],e/.85,np.sqrt((s_e/.85)**2+(e*.02/(.67)**2)**2))
+#plt.show()
